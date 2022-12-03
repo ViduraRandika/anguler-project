@@ -1,0 +1,216 @@
+<div class="container mt-5 mb-5">
+  <h1 class="mb-3">Create report</h1>
+  <form
+    [formGroup]="createReportForm"
+    (submit)="submit(createReportForm.value)"
+  >
+    <div>
+      <div class="mb-3">
+        <h4>Reporting person's info</h4>
+      </div>
+
+      <div>
+        <div class="col">
+          <label for="validationFirstName" class="form-label">First name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="validationFirstName"
+            formControlName="firstName"
+            placeholder="Enter first name"
+            required
+          />
+          <div *ngIf="firstName && (firstName.dirty || firstName.touched)">
+            <div *ngIf="firstName.errors?.['required']">
+              <div class="invalid-feedback" style="display: block !important">
+                First name is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col mt-3">
+          <label for="validationLastName" class="form-label">Last name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="validationLastName"
+            formControlName="lastName"
+            placeholder="Enter last name"
+            required
+          />
+          <div *ngIf="lastName && (lastName.dirty || lastName.touched)">
+            <div *ngIf="lastName.errors?.['required']">
+              <div class="invalid-feedback" style="display: block !important">
+                Last name is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col mt-3">
+          <label for="validationPhoneNumber" class="form-label"
+            >Phone number</label
+          >
+            <input
+              type="number"
+              class="form-control"
+              id="validationPhoneNumber"
+              formControlName="phoneNumber"
+              placeholder="Enter phone number"
+              required
+            />
+            <div
+              *ngIf="phoneNumber && (phoneNumber.dirty || phoneNumber.touched)"
+            >
+              <div *ngIf="phoneNumber.errors?.['required']">
+                <div class="invalid-feedback" style="display: block !important">
+                  Phone number is required
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <div class="mb-3">
+        <h4>Pig info</h4>
+      </div>
+      <div>
+        <div class="col">
+          <label for="validationBreed" class="form-label">Breed</label>
+          <select
+            class="form-select"
+            id="validationBreed"
+            formControlName="breed"
+            required
+          >
+            <option selected disabled value="">Choose breed...</option>
+            <option value="Pot-bellied">Pot-bellied</option>
+            <option value="Berkshire">Berkshire</option>
+            <option value="Chester White">Chester White</option>
+            <option value="Duroc">Duroc</option>
+            <option value="Hampshire">Hampshire</option>
+            <option value="Landrace">Landrace</option>
+            <option value="Poland">Poland China</option>
+            <option value="Spotted">Spotted</option>
+            <option value="Yorkshire">Yorkshire</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+          <div *ngIf="breed && (breed.dirty || breed.touched)">
+            <div *ngIf="breed.errors?.['required']">
+              <div class="invalid-feedback" style="display: block !important">
+                Please select the breed.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col mt-3">
+          <label for="validationPid" class="form-label"
+            >PID (Pig identification number)</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="validationPid"
+            formControlName="pid"
+            placeholder="Enter pid"
+            required
+          />
+          <div *ngIf="pid && (pid.dirty || pid.touched)">
+            <div *ngIf="pid.errors?.['required']">
+              <div class="invalid-feedback" style="display: block !important">
+                PID is required
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <div class="mb-3">
+        <h4>Other info</h4>
+      </div>
+      <div>
+        <div class="col">
+          <label for="validationLocation" class="form-label">Location</label>
+          <select
+            class="form-select"
+            id="validationLocation"
+            formControlName="locationId"
+            required
+            (change)="onChangeLocation()"
+          >
+            <option selected disabled value="">Choose location...</option>
+            <option *ngFor="let e of locations" value="{{ e['key'] }}">
+              {{ e["data"]["locationName"] }}
+            </option>
+          </select>
+          <div
+              *ngIf="locationId && (locationId.dirty || locationId.touched)"
+            >
+              <div *ngIf="locationId.errors?.['required']">
+                <div class="invalid-feedback" style="display: block !important">
+                  Please select a location.
+                </div>
+              </div>
+            </div>
+          <div class="mt-1">
+            <p style="color: red">
+              Note - If you cant't find the location, please click on the below
+              button to add the location.
+            </p>
+            <button
+              class="btn btn-primary col-12"
+              type="button"
+              style="text-decoration: none"
+              (click)="goToAddLocationPage()"
+            >
+              Add location
+            </button>
+          </div>
+          <div class="container mb-5">
+            <div id="map" style="height: 500px; margin: 30px"></div>
+          </div>
+        </div>
+
+        <div class="col mt-3">
+          <label for="validationExtraNotes" class="form-label"
+            >Extra notes</label
+          >
+          <textarea
+            class="form-control"
+            id="validationExtraNotes"
+            formControlName="extraNotes"
+            cols="30"
+            rows="10"
+            placeholder="Extra informaton to farmer"
+            required
+          ></textarea>
+          <div
+              *ngIf="extraNotes && (extraNotes.dirty || extraNotes.touched)"
+            >
+              <div *ngIf="extraNotes.errors?.['required']">
+                <div class="invalid-feedback" style="display: block !important">
+                  Extra notes is required
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3 col-12">
+      <button
+        class="btn btn-primary col-12"
+        type="submit"
+        [disabled]="createReportForm.invalid"
+      >
+        Create report
+      </button>
+    </div>
+  </form>
+</div>

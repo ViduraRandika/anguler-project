@@ -1,0 +1,134 @@
+<div class="container mt-5">
+  <div id="map" style="height: 500px"></div>
+
+  <div class="mt-5 col-12 table-wrapper">
+    <table class="table" id="data-table">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            sortable="locationName"
+            (click)="sortTable('locationName')"
+          >
+            Location
+          </th>
+          <th scope="col" sortable="firstName" (click)="sortTable('firstName')">
+            Reported by
+          </th>
+          <th
+            scope="col"
+            sortable="dateAndTime"
+            (click)="sortTable('dateAndTime')"
+          >
+            Time reported
+          </th>
+          <th scope="col" sortable="status" (click)="sortTable('status')">
+            Status
+          </th>
+          <th scope="col">More info</th>
+          <th scope="col">Change status</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of reports">
+          <td>{{ e["locationName"] }}</td>
+          <td>{{ e["firstName"] }} &nbsp; {{ e["lastName"] }}</td>
+          <td>{{ getDateAndTime(e["dateAndTime"]) }}</td>
+          <td>{{ e["status"] }}</td>
+          <td>
+            <button
+              class="btn btn-link"
+              style="text-decoration: none"
+              (click)="viewMoreInfo(e['key'])"
+            >
+              More info
+            </button>
+          </td>
+          <td>
+            <div *ngIf="e['status'] === 'RETRIEVED'">
+                <button  class="btn btn-warning" (click)="updateReport(e['key'])" disabled>
+                  Change status
+                </button>
+            </div>
+            <div *ngIf="e['status'] !== 'RETRIEVED'">
+                <button  class="btn btn-warning" (click)="updateReport(e['key'])">
+                  Change status
+                </button>
+            </div>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteReport(e['key'])">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-primary col-12" (click)="navigateToCreateReport()">
+    Create report
+  </button>
+</div>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" [ngStyle]="{ display: displayStyle }">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Please enter your password to perform this action ?
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        ></button>
+      </div>
+      <form [formGroup]="submitPasswordForm"
+    (submit)="submit(submitPasswordForm.value)">
+        <div class="modal-body">
+          <input
+            type="password"
+            class="form-control"
+            id="validationFirstName"
+            formControlName="password"
+            placeholder="Enter your password"
+            required
+          />
+          <div *ngIf="password&& (password.dirty || password.touched)">
+                <div *ngIf="password.errors?.['required']">
+                  <div class="invalid-feedback" style="display: block !important">
+                    Password is required
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="submitPasswordForm.invalid"
+          >
+            Continue
+          </button>
+          <button
+            type="button"
+            class="btn btn-warning"
+            data-bs-
+            dismiss="modal"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div *ngIf="displayStyle === 'block'">
+  <div class="modal-backdrop fade show"></div>
+</div>

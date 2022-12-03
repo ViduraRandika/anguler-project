@@ -1,0 +1,37 @@
+<div class="container" style="margin-top: 0">
+  <h4 class="mt-3 mb-5">
+    Please select a location on the map. (Click on the map)
+  </h4>
+
+  <div id="map" style="height: 700px"></div>
+
+  <form
+    class="mt-3"
+    [formGroup]="addLocationForm"
+    (submit)="submit(addLocationForm.value)"
+  >
+    <label for="locationName">Location name</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter location name or address"
+      id="locationName"
+      formControlName="locationName"
+      required
+    />
+    <div *ngIf="locationName && (locationName.dirty || locationName.touched)">
+      <div *ngIf="locationName.errors?.['required']">
+        <div class="invalid-feedback" style="display: block !important">
+          Location name is required
+        </div>
+      </div>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary mt-3 col-12"
+      [disabled]="addLocationForm.invalid"
+    >
+      Save location
+    </button>
+  </form>
+</div>
