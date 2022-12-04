@@ -71,7 +71,13 @@ export class AddLocationComponent implements OnInit {
         this.map.removeLayer(this.myMarker);
       }
 
-      this.myMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map);
+      this.myMarker = L.marker([e.latlng.lat, e.latlng.lng], {
+        icon: L.icon({
+          ...L.Icon.Default.prototype.options,
+          iconUrl: 'marker-icon.png',
+          shadowUrl:'marker-shadow.png',
+        }),
+      }).addTo(this.map);
     });
   }
 

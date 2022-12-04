@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import * as L from 'leaflet';
+import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
   selector: 'app-view-more-info',
@@ -38,12 +39,27 @@ export class ViewMoreInfoComponent implements OnInit {
 
           console.log(this.report['data']);
 
-          this.myMarker = L.marker([
+          this.myMarker = L.marker(
+            [this.location['data']['lat'], this.location['data']['lng']],
+            {
+              icon: L.icon({
+                ...L.Icon.Default.prototype.options,
+                iconUrl: 'marker-icon.png',
+                shadowUrl: 'marker-shadow.png',
+              }),
+            }
+          )
+            .bindTooltip(`Location: ${this.location['data']['locationName']}`, {
+              permanent: true,
+              className: 'label',
+            })
+            .addTo(this.map);
+          
+          this.map.flyTo([
             this.location['data']['lat'],
             this.location['data']['lng'],
-          ])
-            .bindTooltip(`Location: ${this.location['data']['locationName']}`,{permanent:true, className: "label"})
-            .addTo(this.map);
+          ]);
+
           console.log(this.location);
         });
     });

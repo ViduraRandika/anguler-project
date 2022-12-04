@@ -158,9 +158,15 @@ export class CreateReportComponent implements OnInit {
       this.map.removeLayer(this.myMarker);
     }
 
-    this.myMarker = L.marker([location.data.lat, location.data.lng]).addTo(
-      this.map
-    );
+    this.myMarker = L.marker([location.data.lat, location.data.lng], {
+      icon: L.icon({
+        ...L.Icon.Default.prototype.options,
+        iconUrl: 'marker-icon.png',
+        shadowUrl: 'marker-shadow.png',
+      }),
+    }).addTo(this.map);
+
+    this.map.flyTo([location.data.lat, location.data.lng]);
   }
 
   submit(formData: any) {

@@ -90,17 +90,34 @@ export class HomeComponent implements OnInit {
           counts[element.locationId] = (counts[element.locationId] || 0) + 1;
         });
 
+        let markerArr:[[number,number]]=[[0,0]];
+
         for (let key in counts) {
           const locationObj = this.locations.find((o) => o['key'] === key);
           if (locationObj) {
             console.log('location', locationObj['data']['lat']);
-            L.marker([locationObj['data']['lat'], locationObj['data']['lng']])
+             const marker = L.marker([locationObj['data']['lat'], locationObj['data']['lng']], {
+              icon: L.icon({
+                ...L.Icon.Default.prototype.options,
+                iconUrl: 'marker-icon.png',
+                shadowUrl: 'marker-shadow.png',
+              }),
+            })
               .bindPopup(
                 `<div style="text-align:center;"><b> ${locationObj['data']['locationName']} </b><br/> ${counts[key]} pig(s) reported </div>`
               )
-              .addTo(this.map);
+               .addTo(this.map);
+            
+            let lat = parseFloat(locationObj['data']['lat']);
+            let lng = parseFloat(locationObj['data']['lng']);
+            markerArr.push([lat,lng]);
           }
         }
+
+        markerArr.shift();
+        let bound = new L.LatLngBounds(markerArr);
+        
+        this.map.fitBounds(bound);
       });
 
       this.myMarkers = arr;
