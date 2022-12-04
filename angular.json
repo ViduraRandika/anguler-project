@@ -84,7 +84,8 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/favicon.ico",
-              "src/marker-shadow.png"
+              "src/marker-shadow.png",
+              "src/marker-icon.png"
             ],
             "styles": [
               "src/styles.css"
